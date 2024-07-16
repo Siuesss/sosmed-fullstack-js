@@ -1,0 +1,149 @@
+datasource db {
+  provider = "postgresql" 
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                String   @id 
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model User {
+  id                   String         @id
+  username             String         @unique
+  name                 String?
+  email                String         @unique
+  hashPassword         String?
+  image                String?
+  googleId             String?        @unique
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  accounts             Account[]
+  posts                Post[]
+  comments             Comment[]
+  likes                Like[]
+  followers            Follow[]       @relation("UserFollowers")
+  following            Follow[]       @relation("UserFollowing")
+  notifications        Notification[]
+  sentMessages         Message[]      @relation("SentMessages")
+  receivedMessages     Message[]      @relation("ReceivedMessages")
+  views                View[]
+}
+
+model Post {
+  id          String    @id 
+  authorId    String
+  content     String?
+  mediaUrl    String?
+  mediaType   PostType?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments    Comment[]
+  likes       Like[]
+  views       View[]
+}
+
+model Comment {
+  id          String    @id
+  postId      String
+  authorId    String
+  content     String
+  parentId    String?   
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  post        Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author      User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies     Comment[] @relation("CommentReplies")
+
+  @@index([postId])
+  @@index([parentId])
+}
+
+model Like {
+  id          String    @id
+  postId      String
+  userId      String
+  liked       Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  post        Post      @relation(fields: [postId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@unique([postId, userId])
+}
+
+model Follow {
+  id          String    @id
+  followerId  String
+  followingId String
+  followed    Boolean   @default(false)
+
+  follower    User      @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User      @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+}
+
+model Notification {
+  id          String    @id
+  userId      String
+  type        String
+  message     String
+  postId      String?
+  createdAt   DateTime  @default(now())
+
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id          String    @id
+  senderId    String
+  receiverId  String
+  content     String?
+  mediaUrl    String?
+  mediaType   PostType?
+  createdAt   DateTime  @default(now())
+
+  sender      User      @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver    User      @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+}
+
+model View {
+  id             String @id
+  postid         String
+  userid         String
+  createdAt      DateTime @default(now())
+
+  post           Post @relation(fields: [postid], references: [id], onDelete: Cascade)
+  user           User @relation(fields: [userid], references: [id], onDelete: Cascade)
+
+  @@unique([postid, userid])
+}
+
+enum PostType {
+  TEXT
+  IMAGE
+  VIDEO
+}

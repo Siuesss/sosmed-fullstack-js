@@ -1,0 +1,10 @@
+backend/.env: 
+PORT=""
+DATABASE_URL=""
+SECRET_KEY=""
+GOOGLE_CLIENT_ID=""
+GOOGLE_CLIENT_SECRET=""
+FRONTEND="http://localhost:3000"
+BACKEND="http://localhost:3001"
+frontend/.env:
+NEXT_PUBLIC_BACKEND_URL="http://localhost:3001"
