@@ -5,14 +5,6 @@ const createCommentHandler = async (req, res) => {
     const { userId } = req.session;
     const { id } = req.params;
 
-    // if (!userId) {
-    //     res.status(401).json({ message: 'Unauthorized' });
-    //     return;
-    // }
-    // if (!id) {
-    //     res.status(401).json({ message: 'Unauthorized' });
-    //     return;
-    // }
     try {
         const comment = await createComment(userId, id, content);
         res.status(201).json(comment);

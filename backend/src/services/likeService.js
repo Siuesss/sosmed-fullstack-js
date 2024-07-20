@@ -20,10 +20,6 @@ const Like = async (postId, userId) => {
       },
     });
 
-    // if (!post) {
-    //   throw new Error(`Post with id ${postId} not found.`);
-    // }
-
     if (existingLike?.liked === false) {
       const updatedLike = await prisma.like.update({
         where: {

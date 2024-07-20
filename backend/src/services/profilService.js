@@ -51,10 +51,6 @@ const getProfilbyusername = async (userId, loggedInUserId) => {
             }
         });
 
-        // if (!user) {
-        //     throw new Error("User not found");
-        // }
-
         const postsWithIsMine = user.posts.map(post => ({
             ...post,
             isMine: post.author.id === loggedInUserId,
@@ -85,35 +81,6 @@ const editProfil = async(userId, name, username, mediaUrl) => {
       const user = await prisma.user.findUnique({
         where: { id: userId },
       });
-  
-      // if (!user) {
-      //   throw new Error('User not found');
-      // }
-  
-      // const currentTime = new Date();
-      // let updateData = {
-      //   lastUsernameChange: user.lastUsernameChange,
-      // };
-  
-      // if (name) {
-      //   updateData.name = name;
-      // }
-  
-      // if (username) {
-      //   // const lastUsernameChange = user.lastUsernameChange;
-      //   // if (lastUsernameChange) {
-      //   //   const daysSinceLastChange = Math.floor((currentTime.getTime() - lastUsernameChange.getTime()) / (1000 * 60 * 60 * 24));
-      //   //   if (daysSinceLastChange < 30) {
-      //   //     throw new Error('Username can only be changed once every 30 days.');
-      //   //   }
-      //   // }
-      //   updateData.username = `@${username}`;
-      //   // updateData.lastUsernameChange = currentTime;
-      // }
-  
-      // if (mediaUrl) {
-      //   updateData.image = mediaUrl;
-      // }
 
       if (mediaUrl) {
         if (user.image) {

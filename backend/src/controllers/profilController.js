@@ -6,10 +6,6 @@ const getProfilbyusernameHandler = async (req, res) => {
     const loggedInUserId = req.session.userId;
 
     try {
-        // if (!username) {
-        //     res.status(400).json({ message: 'Username is required' });
-        //     return;
-        // }
 
         const user = await checkUsername(username);
         if (!user) {
@@ -30,13 +26,6 @@ const editProfilHandler = async (req, res) => {
     const { name, username } = req.body;
     const image = req.file;
   
-    // const usernameRegex = /^[a-zA-Z0-9-_.]{3,30}$/;
-    // if (name && name.length < 4) {
-    //   return res.status(400).json({ message: 'Nama minimal 4 karakter' });
-    // }
-    // if (username && !usernameRegex.test(username)) {
-    //   return res.status(400).json({ message: 'Username hanya boleh mengandung huruf, angka, tanda hubung, garis bawah, dan titik' });
-    // }
   
     let mediaUrl;
     if (image) {

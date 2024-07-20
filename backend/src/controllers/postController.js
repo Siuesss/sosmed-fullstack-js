@@ -7,16 +7,6 @@ const createPostHandler = async (req, res) => {
   const { userId } = req.session;
   const file = req.file;
 
-  // if (!userId) {
-  //   res.status(401).json({ message: 'Unauthorized' });
-  //   return;
-  // }
-
-  // if (!content && !file) {
-  //   res.status(400).json({ message: 'Content or file must be provided.' });
-  //   return;
-  // }
-
   let mediaUrl;
   let mediaType;
 
@@ -54,16 +44,6 @@ const getAllPostsHandler = async (req, res) => {
 const deletePostHandler = async (req, res) => {
   const { userId } = req.session;
   const { postId } = req.params;
-  
-  // if (!userId) {
-  //   res.status(401).json({ message: 'Unauthorized' });
-  //   return;
-  // }
-
-  // if (!postId) {
-  //   res.status(401).json({ message: 'Unauthorized' });
-  //   return;
-  // }
   try {
     const post = await deletePost(postId, userId);
     res.status(200).json(post);

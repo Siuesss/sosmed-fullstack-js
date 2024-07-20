@@ -20,9 +20,6 @@ const createPost = async (authorId, content, mediaUrl,mediaType,mentionedUserId)
     select: { username: true }
   });
 
-  // if (!user) {
-  //   throw new Error(`User ${user} not found.`);
-  // }
 
   for (const mentionedUser of mentionedUserId) {
     await createMentionNotification(mentionedUser.id, user.username, post.id);
@@ -81,14 +78,6 @@ const deletePost = async (postId, userId) => {
       mediaUrl: true
     },
   });
-
-  // if (!post) {
-  //   throw new Error('Post not found');
-  // }
-
-  // if (post.authorId !== userId) {
-  //   throw new Error('Unauthorized');
-  // };
 
   if(post.mediaUrl){
     const oldImagePath = path.join(__dirname, '..', '..', post.mediaUrl);

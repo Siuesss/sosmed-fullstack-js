@@ -3,15 +3,6 @@ import {isSelf as check, checkUserIdnoselectid} from '../services/userService.js
 const isSelfHandler = async (req, res) => {
     const { userId } = req.session;
     const { username } = req.params;
-    // if (!userId) {
-    //     res.status(401).json({ message: 'Unauthorized' });
-    //     return;
-    // }
-
-    // if (!username) {
-    //     res.status(401).json({ message: 'Unauthorized' });
-    //     return;
-    // }
     try {
         const isSelf = await check(userId, username);
         res.status(200).json({ isSelf });
@@ -22,10 +13,6 @@ const isSelfHandler = async (req, res) => {
 
 const checkUserIdHandler = async (req,res) => {
     const {userId} = req.session;
-    // if (!userId) {
-    //     res.status(401).json({ message: 'Unauthorized' });
-    //     return;
-    // }
     try {
         const check = await checkUserIdnoselectid(userId);
         res.status(200).json({check});

@@ -8,19 +8,6 @@ const RegisterHandler = async (req, res) => {
     return;
   }
 
-  // const usernameRegex = /^[a-zA-Z0-9-_.]{3,30}$/;
-  // if (username.length < 4) {
-  //   res.status(400).json({ message: 'Username minimal 4 karakter' });
-  //   return;
-  // }
-  // if (!usernameRegex.test(username)) {
-  //   res.status(400).json({ message: 'Username hanya boleh mengandung huruf, angka, tanda hubung, garis bawah, dan titik' });
-  //   return;
-  // }
-  // if (password.length < 4) {
-  //   res.status(400).json({ message: 'Password minimal 4 karakter' });
-  //   return;
-  // }
 
   try {
     const result = await Register(username, email, password);
@@ -71,20 +58,10 @@ const changepasswordHandler = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const { userId } = req.session;
 
-  // if (!userId) {
-  //   res.status(401).json({ message: 'Unauthorized' });
-  //   return;
-  // }
-
   if(!oldPassword && !newPassword){
     res.status(400).json({ message: 'Old password and new password are required' });
     return;
   }
-
-  // if (newPassword.length < 4) {
-  //   res.status(400).json({ message: 'Password minimal 4 karakter' });
-  //   return;
-  // }
 
   try {
     const result = await changepassword(userId, oldPassword, newPassword);

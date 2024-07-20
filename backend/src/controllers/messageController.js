@@ -14,15 +14,6 @@ const newMessageHandler = async (req, res) => {
     const file = req.file;
 
     try {
-        // if (!userId) {
-        //     res.status(401).json({ error: 'Unauthorized' });
-        //     return;
-        // }
-
-        // if (!content && !file) {
-        //     res.status(400).json({ message: 'Content or file must be provided.' });
-        //     return;
-        // }
         let mediaUrl;
         let mediaType;
 
@@ -41,11 +32,6 @@ const newMessageHandler = async (req, res) => {
             res.status(404).json({ error: 'User not found' });
             return;
         }
-
-        // if (sender.id === receiver.id) {
-        //     res.status(400).json({ error: 'Cannot send message to yourself' });
-        //     return;
-        // }
 
         const message = await newMessage(sender.id, receiver.id, content || null, mediaUrl, mediaType);
         const fullMessage = {
@@ -67,23 +53,8 @@ const getMessageHandler = async (req, res) => {
     const { username } = req.params;
 
     try {
-        // if (!userId) {
-        //     res.status(401).json({ error: 'Unauthorized' });
-        //     return;
-        // }
-
         const sender = await checkUserId(userId);
         const receiver = await checkUsername(username);
-
-        // if (!sender || !receiver) {
-        //     res.status(404).json({ error: 'User not found' });
-        //     return;
-        // }
-
-        // if (sender.id === receiver.id) {
-        //     res.status(400).json({ error: 'Cannot send message to yourself' });
-        //     return;
-        // }
 
         const sanitizedMessages = await getMessage(sender.id, receiver.id);
         res.status(200).json(sanitizedMessages);
@@ -97,10 +68,6 @@ const getLastMessageHandler = async (req, res) => {
     const { userId } = req.session;
   
     try {
-    //   if (!userId) {
-    //     res.status(401).json({ error: 'Unauthorized' });
-    //     return;
-    //   }
   
       const lastChats = await getLastMessage(userId);
       res.status(200).json(lastChats);
